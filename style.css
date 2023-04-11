@@ -41,9 +41,6 @@ body {
     text-align: center;
     color: white;
     background-color: transparent;
-    /*border: solid;*/
-    /* border-width: 1.5px; */
-    /* border-color: black; */
   }
   
   #canvas-container {
@@ -53,7 +50,7 @@ body {
     align-items: center;
     background-color: black;
     /* width: 80%; */
-    width: 100%;
+    width: 80%;
     height: 85%;
     border: 5px double white;
   }
