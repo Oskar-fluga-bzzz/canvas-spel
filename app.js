@@ -20,7 +20,7 @@ function spawnPlayer() {
     c.closePath()
 
     c.lineWidth = 10
-    c.strokeStyle = "rgba(102, 102, 102, 1)"
+    c.strokeStyle = "white"
     c.stroke()
 
     c.fillStyle = "white"
