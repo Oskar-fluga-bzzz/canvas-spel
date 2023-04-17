@@ -1,5 +1,7 @@
 // --- import --- //
 import Player from "./player.js"
+import BulletHandler from "./BulletHandler.js"
+import Enemy from "./enemy.js"
 
 
 // --- canvas fönstret --- //
@@ -11,27 +13,7 @@ canvas.style.width = "100%"
 canvas.style.height = "100%"
 
 
-// --- misc --- //
-var myMusic
-
-
-// --- spawnar in spelaren --- //
-const player = new Player(canvas.width/7, canvas.height/2)
-
-
-// --- main loop --- //
-function gameLoop() {
-  setStyle()
-  // --- spelar musik --- //
-/*   myMusic = new sound("content/Guitarmass.mp3")
-  myMusic.play() */
-  c.fillStyle = "black"
-  c.fillRect(0, 0, canvas.width, canvas.height)
-  player.draw(c)
-}
-
-
-// --- musik konstruktör --- //
+// --- SOUNDENGINE5000MK2 --- //
 function sound(src) {
   this.sound = document.createElement("audio");
   this.sound.src = src;
@@ -48,13 +30,35 @@ function sound(src) {
 }
 
 
-// --- stil funktion --- //
+// --- ändrar utseendet lite --- //
 function setStyle() {
   c.shadowColor = "blue"
   c.shadowBlur = 30
   c.lineJoin = "bevel"
   c.lineWidth = 5
 }
+
+
+// --- hanterar skott --- //
+const bulletHandler = new BulletHandler(canvas)
+
+// --- spawnar in spelaren --- //
+const player = new Player(canvas.width / 7, canvas.height / 2, bulletHandler)
+
+
+// --- main loop --- //
+function gameLoop() {
+  setStyle()
+  c.fillStyle = "black"
+  c.fillRect(0, 0, canvas.width, canvas.height)
+  bulletHandler.draw(c)
+  player.draw(c)
+}
+
+// --- spelar musik --- //
+//var myMusic
+//myMusic = new sound("content/Guitarmass.mp3")
+//myMusic.play()
 
 
 // --- intervall --- //
