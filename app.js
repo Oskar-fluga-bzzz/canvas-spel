@@ -7,18 +7,21 @@ canvas.style.height = "100%"
 
 const c = canvas.getContext("2d")
 c.fillStyle = "#FF0000"
+
+// -- setup -- //
 const midX = canvas.width / 2
 const midY = canvas.height / 2
 var player_x = midX
 var player_y = midY
 
-
-// --- knapptryck --- //
 let upPressed = false;
 let downPressed = false;
 let rightPressed = false;
 let leftPressed = false;
 let spacePressed = false;
+
+let projectile_x = player_x - 400
+let projectile_y = 0
 
 // --- mera knapptryck --- //
 document.addEventListener("keydown", keyDownHandler, false);
@@ -69,20 +72,18 @@ function spawnPlayer() {
 
 
 function projectileSpawn(){
+  projectile_y = player_y
   c.arc(projectile_x, projectile_y, 10, 0, Math.PI * 2);
   c.fill();
+  projectile_x += 2
 }
-let projectile_x = player_x - 400
-let projectile_y = player_y
 
 
 // --- draw funktion --- //
 function draw() {
     c.clearRect(0, 0, canvas.width, canvas.height);
     spawnPlayer()
-
-
-    // if sats som kollar efter knapptryck
+    // rörelse
     if (upPressed) {
         player_y = Math.max(player_y - 7, 30);
       } 
@@ -95,11 +96,9 @@ function draw() {
     if (leftPressed) {
         player_x = Math.max(player_x - 7, 450);
       }
-    if (spacePressed) {
-      projectileSpawn()
-    }
-
-      projectile_x += 2
+      if (spacePressed) {
+        projectileSpawn()
+      }
 }
 
 draw()
