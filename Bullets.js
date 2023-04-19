@@ -5,7 +5,7 @@ export default class Bullet{
     this.y = y
     this.speed = speed
     this.damage = damage
-    this.radius = 5
+    this.radius = 10
     this.color = "white"
     }
 

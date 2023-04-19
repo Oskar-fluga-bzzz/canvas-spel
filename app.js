@@ -45,7 +45,7 @@ function enemySpawn() {
   const enemy_colour = "red"
   const enemy_health = 20
   const enemy_speed = 10
-  const enemy_radius = 20
+  const enemy_radius = 30
   const enemy_damage = 20
   const enemy_delay = 40
   enemyHandler.spawnEnemy(enemy_x, enemy_y, enemy_colour, enemy_health, enemy_speed, enemy_radius, enemy_damage, enemy_delay)
