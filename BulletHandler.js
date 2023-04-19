@@ -14,7 +14,7 @@ export default class BulletHandler {
     // --- gör så att det är lite tid mellan skott --- //
     fire(x,y,speed,damage,delay) {
         if (this.timeTilNextShot <= 0) {
-            this.bullets.push(new Bullet(x ,y ,speed ,damage))
+            this.bullets.push(new Bullet(x, y, speed, damage))
             this.timeTilNextShot = delay
         }
 

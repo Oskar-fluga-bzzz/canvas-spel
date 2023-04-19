@@ -42,8 +42,11 @@ function setStyle() {
 // --- hanterar skott --- //
 const bulletHandler = new BulletHandler(canvas)
 
-// --- spawnar in spelaren --- //
+// --- tar in spelaren --- //
 const player = new Player(canvas.width / 7, canvas.height / 2, bulletHandler)
+
+// --- fiender --- //
+const enemy = new Enemy(canvas.width, canvas.height / 2, "red", 20)
 
 
 // --- main loop --- //
@@ -53,6 +56,7 @@ function gameLoop() {
   c.fillRect(0, 0, canvas.width, canvas.height)
   bulletHandler.draw(c)
   player.draw(c)
+  enemy.draw(c)
 }
 
 // --- spelar musik --- //

@@ -5,11 +5,13 @@ export default class Player{
      constructor(x, y, bulletHandler){
         this.x = x
         this.y = y
+        this.canvas_x = this.x * 7
+        this.canvas_y = this.y * 2
         this.bulletHandler = bulletHandler
         this.width = 70
-        this.height = 25
+        this.height = 50
         this.speed = 10
-        this.canvas = canvas
+        this.spacePress = true
 
         document.addEventListener('keydown',this.keydown)
         document.addEventListener('keyup',this.keyup)
@@ -22,9 +24,9 @@ export default class Player{
         c.strokeStyle = 'white'
         c.fillStyle = 'white'
         c.beginPath()
-        c.moveTo(this.x, this.y + this.height)
+        c.moveTo(this.x, this.y + this.height / 2)
         c.lineTo(this.x + this.width, this.y)
-        c.lineTo(this.x, this.y - this.height)
+        c.lineTo(this.x, this.y - this.height / 2)
         c.closePath()
         c.fill()
 
@@ -35,10 +37,9 @@ export default class Player{
     // --- skjuter om man trycker på spacebar --- //
      fire() {
         if(this.spacePress){
-            console.log("om man tänder eld så blir den fire")
             // --- avfyrningens parametrar --- //
             const speed = 20
-            const delay = 7
+            const delay = 20
             const damage = 1
             const bulletX = this.x
             const bulletY = this.y
@@ -50,16 +51,16 @@ export default class Player{
     // --- metod för rörelse --- //
      move(){
         if(this.upPress) {
-            this.y -= this.speed
+            this.y = Math.max(this.y - this.speed, this.height / 2)
         }
         if(this.downPress) {
-            this.y += this.speed
+            this.y = Math.min(this.y + this.speed, this.canvas_y - this.height / 2)
         }
         if(this.leftPress) {
-            this.x -= this.speed
+            this.x = Math.max(this.x - this.speed, 0)
         }
         if(this.rightPress) {
-            this.x += this.speed
+            this.x = Math.min(this.x + this.speed, this.canvas_x - this.width)
         }
      }
 
@@ -90,8 +91,8 @@ export default class Player{
             this.leftPress = false
         } else if(e.code === "ArrowRight" || e.code === "Right"){
             this.rightPress = false
-        } else if(e.code === "Space" || e.code === " ") {
+        } /* else if(e.code === "Space" || e.code === " ") {
             this.spacePress = false
-        }
+        } */
      }
 }
