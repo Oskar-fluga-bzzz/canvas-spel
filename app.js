@@ -1,7 +1,7 @@
 // --- import --- //
 import Player from "./player.js"
 import BulletHandler from "./BulletHandler.js"
-import Enemy from "./enemy.js"
+import EnemyHandler from "./EnemyHandler.js"
 
 
 // --- canvas fönstret --- //
@@ -32,10 +32,23 @@ function sound(src) {
 
 // --- ändrar utseendet lite --- //
 function setStyle() {
-  c.shadowColor = "blue"
   c.shadowBlur = 30
   c.lineJoin = "bevel"
   c.lineWidth = 5
+}
+
+
+// --- spawnfunktion för fiender --- //
+function enemySpawn() {
+  const enemy_x = canvas.width
+  const enemy_y = canvas.height / 2
+  const enemy_colour = "red"
+  const enemy_health = 20
+  const enemy_speed = 10
+  const enemy_radius = 20
+  const enemy_damage = 20
+  const enemy_delay = 40
+  enemyHandler.spawnEnemy(enemy_x, enemy_y, enemy_colour, enemy_health, enemy_speed, enemy_radius, enemy_damage, enemy_delay)
 }
 
 
@@ -46,17 +59,19 @@ const bulletHandler = new BulletHandler(canvas)
 const player = new Player(canvas.width / 7, canvas.height / 2, bulletHandler)
 
 // --- fiender --- //
-const enemy = new Enemy(canvas.width, canvas.height / 2, "red", 20)
-
+const enemyHandler = new EnemyHandler(canvas)
 
 // --- main loop --- //
 function gameLoop() {
   setStyle()
   c.fillStyle = "black"
   c.fillRect(0, 0, canvas.width, canvas.height)
+
   bulletHandler.draw(c)
   player.draw(c)
-  enemy.draw(c)
+
+  enemyHandler.draw(c)
+  enemySpawn()
 }
 
 // --- spelar musik --- //

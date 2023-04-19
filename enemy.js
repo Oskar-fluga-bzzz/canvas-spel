@@ -1,18 +1,20 @@
 export default class Enemy{
-    constructor(x,y,color,health) {
+    constructor(x, y, colour, health, speed, radius, damage) {
         // --- parametrar --- //
         this.x = x
         this.y = y
-        this.color = color
+        this.colour = colour
         this.health = health
-        this.radius = 50
-        this.speed = 10
+        this.speed = speed
+        this.radius = radius
+        this.damage = damage
     }
 
-    // TODO: fixa fiender
+
+    // --- ritar fiender --- //
     draw(c) {
         this.movementPattern()
-        c.fillStyle = this.color
+        c.fillStyle = this.colour
         c.beginPath()
         c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI)
         c.fill()

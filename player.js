@@ -11,7 +11,6 @@ export default class Player{
         this.width = 70
         this.height = 50
         this.speed = 10
-        this.spacePress = true
 
         document.addEventListener('keydown',this.keydown)
         document.addEventListener('keyup',this.keyup)
@@ -91,8 +90,8 @@ export default class Player{
             this.leftPress = false
         } else if(e.code === "ArrowRight" || e.code === "Right"){
             this.rightPress = false
-        } /* else if(e.code === "Space" || e.code === " ") {
+        } else if(e.code === "Space" || e.code === " ") {
             this.spacePress = false
-        } */
+        } 
      }
 }
