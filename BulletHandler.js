@@ -32,7 +32,18 @@ export default class BulletHandler {
         })
     }
 
+
     isBulletOffScreen(bullet){
         return bullet.x >= this.canvas.width
+    }
+
+    collideWith(sprite) {
+        return this.bullets.some((bullet) =>{
+            if (bullet.collideWith(sprite)){
+                this.bullets.splice(this.bullets.indexOf(bullet), 1)
+                return true
+            }
+            return false
+        })
     }
 }

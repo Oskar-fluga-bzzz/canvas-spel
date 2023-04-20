@@ -18,4 +18,17 @@ export default class Bullet{
         c.fill()
         c.closePath
     }
+
+    collideWith(sprite){
+        const dx = sprite.x - this.x
+        const dy = sprite.y - this.y
+        const distance = Math.sqrt(dx * dx + dy * dy)
+        if(
+            distance <= sprite.radius + this.radius
+        ){
+        sprite.ouchie(this.damage)
+        return true
+        }
+        return false
+    }
 }

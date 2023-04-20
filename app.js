@@ -43,9 +43,9 @@ function enemySpawn() {
   const enemy_x = canvas.width
   const enemy_y = canvas.height / 2
   const enemy_colour = "red"
-  const enemy_health = 20
+  const enemy_health = 3
   const enemy_speed = 10
-  const enemy_radius = 30
+  const enemy_radius = 50
   const enemy_damage = 20
   const enemy_delay = 40
   enemyHandler.spawnEnemy(enemy_x, enemy_y, enemy_colour, enemy_health, enemy_speed, enemy_radius, enemy_damage, enemy_delay)
@@ -72,6 +72,17 @@ function gameLoop() {
 
   enemyHandler.draw(c)
   enemySpawn()
+
+  // --- kollosion --- //
+  enemyHandler.enemies.forEach((enemy) => {
+    if (bulletHandler.collideWith(enemy)) {
+      if(enemy.health <= 0) {
+        const index = enemyHandler.enemies.indexOf(enemy)
+        enemyHandler.enemies.splice(index, 1)
+      }
+    }
+  })
+
 }
 
 // --- spelar musik --- //

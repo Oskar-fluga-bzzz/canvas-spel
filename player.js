@@ -8,8 +8,8 @@ export default class Player{
         this.canvas_x = this.x * 7
         this.canvas_y = this.y * 2
         this.bulletHandler = bulletHandler
-        this.width = 70
-        this.height = 50
+        this.width = 100
+        this.height = 80
         this.speed = 10
 
         document.addEventListener('keydown',this.keydown)
@@ -37,8 +37,8 @@ export default class Player{
      fire() {
         if(this.spacePress){
             // --- avfyrningens parametrar --- //
-            const speed = 20
-            const delay = 20
+            const speed = 30
+            const delay = 10
             const damage = 1
             const bulletX = this.x
             const bulletY = this.y
