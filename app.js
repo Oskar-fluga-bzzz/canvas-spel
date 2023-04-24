@@ -46,7 +46,7 @@ function enemySpawn() {
   const enemy_health = 3
   const enemy_speed = 10
   const enemy_radius = 30
-  const enemy_damage = 2
+  const enemy_damage = 1
   const enemy_delay = 40
   enemyHandler.spawnEnemy(enemy_x, enemy_y, enemy_colour, enemy_health, enemy_speed, enemy_radius, enemy_damage, enemy_delay)
 }
@@ -74,7 +74,7 @@ function gameLoop() {
   enemySpawn()
 
   c.fillStyle = "white"
-  c.font = "75px Arial"
+  c.font = "75px Bungee Outline"
   c.fillText(
     player.health,
     50,
@@ -96,7 +96,7 @@ function gameLoop() {
       clearInterval(intervalID)
       c.fillRect(0, 0, canvas.width, canvas.height)
       c.fillStyle = "white"
-      c.font = "75px Arial"
+      c.font = "50px Bungee Outline"
       c.fillText(
           "You Are Dead",
           50,

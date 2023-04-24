@@ -11,7 +11,7 @@ export default class Player{
         this.width = 80
         this.height = 60
         this.speed = 10
-        this.health = 10
+        this.health = 5
 
         document.addEventListener('keydown',this.keydown)
         document.addEventListener('keyup',this.keyup)
@@ -21,6 +21,7 @@ export default class Player{
     // --- ritar spelaren --- //
      draw(c){
         this.move()
+
         c.strokeStyle = 'white'
         c.fillStyle = 'white'
         c.beginPath()
@@ -30,6 +31,14 @@ export default class Player{
         c.closePath()
         c.fill()
 
+        /* const img = new Image();
+        img.onload = () => {
+            c.beginPath()
+              c.drawImage(img, this.x, this.y)
+              c.closePath()
+        };
+        img.src = "stolen assets/ship.png";
+ */
         this.fire()
      }
 

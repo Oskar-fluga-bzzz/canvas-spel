@@ -41,7 +41,6 @@ export default class Enemy{
         this.x -= this.speed
     }
 
-
     ouchie(damage){
         this.health -= damage
     }
