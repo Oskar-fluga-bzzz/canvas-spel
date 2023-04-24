@@ -1,5 +1,5 @@
 // --- import --- //
-import Enemy from "./Enemy.js"
+import Enemy from "./enemy.js"
 
 
 // --- samma sak som bullet handler basically --- //
@@ -33,5 +33,15 @@ export default class EnemyHandler{
 
         isEnemyOffscreen(enemy){
             return enemy.x <= 0
+        }
+
+        playerCollide(sprite) {
+            return this.enemies.some((enemy) =>{
+                if (enemy.playerCollide(sprite)){
+                    this.enemies.splice(this.enemies.indexOf(enemy), 1)
+                    return true
+                }
+                return false
+            })
         }
     }

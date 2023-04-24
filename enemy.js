@@ -26,7 +26,7 @@ export default class Enemy{
         c.fill()
         c.stroke()
         c.fillStyle = "black"
-        c.font = "50px Arial"
+        c.font = "25px Arial"
         c.fillText(
             this.health,
             this.x,
@@ -44,5 +44,18 @@ export default class Enemy{
 
     ouchie(damage){
         this.health -= damage
+    }
+
+    playerCollide(sprite){
+        const dx = this.x - sprite.x
+        const dy = this.y - sprite.y
+        const distance = Math.sqrt(dx * dx + dy * dy)
+        if(
+            distance <= sprite.width + this.radius
+        ){
+        sprite.health -= this.damage
+        return true
+        }
+        return false
     }
 }

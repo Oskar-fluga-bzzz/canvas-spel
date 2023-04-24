@@ -8,9 +8,10 @@ export default class Player{
         this.canvas_x = this.x * 7
         this.canvas_y = this.y * 2
         this.bulletHandler = bulletHandler
-        this.width = 100
-        this.height = 80
+        this.width = 80
+        this.height = 60
         this.speed = 10
+        this.health = 10
 
         document.addEventListener('keydown',this.keydown)
         document.addEventListener('keyup',this.keyup)

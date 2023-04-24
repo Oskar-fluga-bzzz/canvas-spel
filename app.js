@@ -45,8 +45,8 @@ function enemySpawn() {
   const enemy_colour = "red"
   const enemy_health = 3
   const enemy_speed = 10
-  const enemy_radius = 50
-  const enemy_damage = 20
+  const enemy_radius = 30
+  const enemy_damage = 2
   const enemy_delay = 40
   enemyHandler.spawnEnemy(enemy_x, enemy_y, enemy_colour, enemy_health, enemy_speed, enemy_radius, enemy_damage, enemy_delay)
 }
@@ -73,12 +73,35 @@ function gameLoop() {
   enemyHandler.draw(c)
   enemySpawn()
 
+  c.fillStyle = "white"
+  c.font = "75px Arial"
+  c.fillText(
+    player.health,
+    50,
+    100
+  )
+
+  c.fillStyle = "black"
+
   // --- kollosion --- //
   enemyHandler.enemies.forEach((enemy) => {
     if (bulletHandler.collideWith(enemy)) {
       if(enemy.health <= 0) {
         const index = enemyHandler.enemies.indexOf(enemy)
         enemyHandler.enemies.splice(index, 1)
+      }
+    }
+    if (enemyHandler.playerCollide(player)) {
+      if (player.health <= 0) {
+      clearInterval(intervalID)
+      c.fillRect(0, 0, canvas.width, canvas.height)
+      c.fillStyle = "white"
+      c.font = "75px Arial"
+      c.fillText(
+          "You Are Dead",
+          50,
+          100
+      )
       }
     }
   })
@@ -92,4 +115,5 @@ function gameLoop() {
 
 
 // --- intervall --- //
-setInterval(gameLoop, 1000 / 60)
+let intervalID
+intervalID = setInterval(gameLoop, 1000 / 60)
