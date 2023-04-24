@@ -12,9 +12,9 @@ export default class EnemyHandler{
     }
 
     // --- Gör så att det är lite tid mellan fiender --- //
-    spawnEnemy(x, y, colour, health, speed, radius, damage, delay) {
+    spawnEnemy(x, y, colour, health, xspeed, yspeed, radius, damage, delay) {
                 if (this.timeTilNextSpawn <= 0) {
-                    this.enemies.push(new Enemy(x, y, colour, health, speed, radius, damage))
+                    this.enemies.push(new Enemy(x, y, colour, health, xspeed, yspeed, radius, damage))
                     this.timeTilNextSpawn = delay
                 }
                 this.timeTilNextSpawn--

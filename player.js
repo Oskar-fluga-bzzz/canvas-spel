@@ -11,7 +11,7 @@ export default class Player{
         this.width = 80
         this.height = 60
         this.speed = 10
-        this.health = 5
+        this.health = 20
 
         document.addEventListener('keydown',this.keydown)
         document.addEventListener('keyup',this.keyup)
@@ -31,14 +31,14 @@ export default class Player{
         c.closePath()
         c.fill()
 
-        /* const img = new Image();
+/*         const img = new Image()
         img.onload = () => {
             c.beginPath()
-              c.drawImage(img, this.x, this.y)
+              c.drawImage(img, this.x, this.y - 100)
               c.closePath()
         };
-        img.src = "stolen assets/ship.png";
- */
+        img.src = "stolen assets/ship.png" */
+
         this.fire()
      }
 
@@ -48,9 +48,9 @@ export default class Player{
         if(this.spacePress){
             // --- avfyrningens parametrar --- //
             const speed = 30
-            const delay = 10
+            const delay = 4
             const damage = 1
-            const bulletX = this.x
+            const bulletX = this.x + this.width
             const bulletY = this.y
             this.bulletHandler.fire(bulletX, bulletY, speed, damage, delay)
         }
