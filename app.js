@@ -32,8 +32,7 @@ function sound(src) {
 
 // --- ändrar utseendet lite --- //
 function setStyle() {
-  c.shadowBlur = 10
-  c.shadowColor = "white"
+  c.shadowBlur = 0
   c.lineJoin = "bevel"
   c.lineWidth = 10
 }
@@ -67,8 +66,8 @@ const colours = [
 ]
 
 
-let enemy_x = canvas.width
-let enemy_y = canvas.height / 2
+let enemy_x
+let enemy_y
 let enemy_colour
 let enemy_health
 let enemy_xspeed
@@ -85,21 +84,24 @@ function enemySpawn() {
   if (timeTilRefresh <= 0) {
     enemy_colour = colours[getRandomArbitrary(0, colours.length)]
     enemy_health = getRandomArbitrary(3 + diffThreshold, 5 + diffThreshold)
-    enemy_xspeed = getRandomArbitrary(1 + diffThreshold, 3 + diffThreshold)
-    enemy_yspeed = getRandomArbitrary(-8, 8)
+    enemy_xspeed = getRandomArbitrary(3 + diffThreshold, 5 + diffThreshold)
+    enemy_yspeed = getRandomArbitrary(-6, 6)
     enemy_radius = 30 + enemy_health * 5
     enemy_damage = 1
     enemy_delay = getRandomArbitrary(15, 20)
+    enemy_x = canvas.width + enemy_radius
+    enemy_y = getRandomArbitrary(enemy_radius, canvas.height - enemy_radius)
     timeTilRefresh = 100
     waveCounter += 1
   }
   // --- gör spelet svårare med tiden --- //
   if (waveCounter == 10){
+    player.damage += 0.5
     diffThreshold ++
     waveCounter = 0
   }
   timeTilRefresh --
-  enemyHandler.spawnEnemy(enemy_x, enemy_y, enemy_colour, enemy_health, enemy_xspeed, enemy_yspeed, enemy_radius, enemy_damage, enemy_delay)
+  enemyHandler.spawnEnemy(enemy_x, enemy_y, enemy_colour, enemy_health, enemy_xspeed, enemy_yspeed, enemy_radius, enemy_damage, enemy_delay, canvas.width, canvas.height)
 }
 
 
@@ -121,9 +123,6 @@ function gameLoop() {
   bulletHandler.draw(c)
   player.draw(c)
 
-  enemyHandler.draw(c)
-  enemySpawn()
-
   c.fillStyle = "white"
   c.font = "75px Arial"
   c.fillText(
@@ -131,6 +130,10 @@ function gameLoop() {
     50,
     100
   )
+
+  enemyHandler.draw(c)
+  enemySpawn()
+
 
   // --- kollosion --- //
   enemyHandler.enemies.forEach((enemy) => {

@@ -12,6 +12,7 @@ export default class Player{
         this.height = 60
         this.speed = 10
         this.health = 20
+        this.damage = 1
 
         document.addEventListener('keydown',this.keydown)
         document.addEventListener('keyup',this.keyup)
@@ -39,19 +40,18 @@ export default class Player{
         };
         img.src = "stolen assets/ship.png" */
 
-        this.fire()
+        this.fire(this.damage)
      }
 
 
     // --- skjuter om man trycker på spacebar --- //
-     fire() {
+     fire(damage) {
         if(this.spacePress){
             // --- avfyrningens parametrar --- //
             const speed = 30
-            const damage = 1
             const bulletX = this.x + this.width
             const bulletY = this.y
-            const delay = 4
+            const delay = 5
             this.bulletHandler.fire(bulletX, bulletY, speed, damage, delay)
         }
      }

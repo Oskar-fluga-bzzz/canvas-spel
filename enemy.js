@@ -1,10 +1,10 @@
 export default class Enemy{
-    constructor(x, y, colour, health, xspeed, yspeed, radius, damage) {
+    constructor(x, y, colour, health, xspeed, yspeed, radius, damage, cx, cy) {
         // --- parametrar --- //
         this.x = x
         this.y = y
-        this.canvas_x = this.x
-        this.canvas_y = this.y * 2
+        this.canvas_x = cx
+        this.canvas_y = cy
         this.colour = colour
         this.health = health
         this.xSpeed = xspeed
@@ -21,6 +21,7 @@ export default class Enemy{
         c.fillStyle = "black"
         c.lineWidth = this.health * 4
         c.shadowColor = this.colour
+        c.shadowBlur = 10
         c.beginPath()
         c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI)
 
