@@ -17,12 +17,10 @@ export default class Enemy{
     // --- ritar fiender --- //
     draw(c) {
         this.movementPattern()
-        if (this.health >= 2) {
-            c.strokeStyle = "orange"
-        } else {
-            c.strokeStyle = this.colour
-        }
-        c.fillStyle = this.colour
+        c.strokeStyle = this.colour
+        c.fillStyle = "black"
+        c.lineWidth = this.health * 4
+        c.shadowColor = this.colour
         c.beginPath()
         c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI)
 
@@ -59,11 +57,11 @@ export default class Enemy{
 
 
     playerCollide(sprite){
-        const dx = this.x - sprite.x - sprite.width / 2 + 100
+        const dx = this.x - sprite.x - sprite.width / 2
         const dy = this.y - sprite.y
         const distance = Math.sqrt(dx * dx + dy * dy)
         if(
-            distance <= sprite.height + this.radius
+            distance <= sprite.height + this.radius - 50
         ){
         sprite.health -= this.damage
         return true

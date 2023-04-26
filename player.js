@@ -48,10 +48,10 @@ export default class Player{
         if(this.spacePress){
             // --- avfyrningens parametrar --- //
             const speed = 30
-            const delay = 3
             const damage = 1
             const bulletX = this.x + this.width
             const bulletY = this.y
+            const delay = 4
             this.bulletHandler.fire(bulletX, bulletY, speed, damage, delay)
         }
      }

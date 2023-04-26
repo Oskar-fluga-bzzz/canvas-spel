@@ -32,9 +32,10 @@ function sound(src) {
 
 // --- ändrar utseendet lite --- //
 function setStyle() {
-  c.shadowBlur = 30
+  c.shadowBlur = 10
+  c.shadowColor = "white"
   c.lineJoin = "bevel"
-  c.lineWidth = 5
+  c.lineWidth = 10
 }
 
 
@@ -44,36 +45,58 @@ function getRandomArbitrary(min, max) {
 }
 
 
+// --- färger för fiender --- //
 const colours = [
-  "92140C",
-  "297373",
-  "CF1259",
-  "7EBDC3",
-  "7BF1A8",
-  "90F1EF"
+  "#1afe49",
+  "#f887ff",
+  "#de004e",
+  "#e96d5e",
+  "#ff9760",
+  "#ff124f",
+  "#ff00a0",
+  "#fe75f3",
+  "#73fffe",
+  "#ff6e27",
+  "#c4ffff",
+  "#08deea",
+  "#1261d1",
+  "#65dc98",
+  "#a0ffe3",
+  "#ff2a6d",
+  "#05d9e8"
 ]
 
 
-// --- spawnfunktion för fiender --- //
 let enemy_x = canvas.width
 let enemy_y = canvas.height / 2
-let enemy_colour = "red"
-let enemy_health = 3
-let enemy_xspeed = 3
-let enemy_yspeed = 3
-let enemy_radius = 40
-let enemy_damage = 1
-let enemy_delay = 11
+let enemy_colour
+let enemy_health
+let enemy_xspeed
+let enemy_yspeed
+let enemy_radius
+let enemy_damage
+let enemy_delay
 let timeTilRefresh = 0
+let diffThreshold = 0
+let waveCounter = 0
+// --- spawnfunktion för fiender --- //
 function enemySpawn() {
+  // --- Slumpar fienders egenskaper --- //
   if (timeTilRefresh <= 0) {
-    enemy_colour = colours[getRandomArbitrary(1, 4)]
-    enemy_health = getRandomArbitrary(3, 5)
-    enemy_xspeed = getRandomArbitrary(1, 3)
-    enemy_yspeed = getRandomArbitrary(-7, 7)
-    enemy_radius = enemy_health * 10
-    enemy_delay = getRandomArbitrary(10, 15)
-    timeTilRefresh = 500
+    enemy_colour = colours[getRandomArbitrary(0, colours.length)]
+    enemy_health = getRandomArbitrary(3 + diffThreshold, 5 + diffThreshold)
+    enemy_xspeed = getRandomArbitrary(1 + diffThreshold, 3 + diffThreshold)
+    enemy_yspeed = getRandomArbitrary(-8, 8)
+    enemy_radius = 30 + enemy_health * 5
+    enemy_damage = 1
+    enemy_delay = getRandomArbitrary(15, 20)
+    timeTilRefresh = 100
+    waveCounter += 1
+  }
+  // --- gör spelet svårare med tiden --- //
+  if (waveCounter == 10){
+    diffThreshold ++
+    waveCounter = 0
   }
   timeTilRefresh --
   enemyHandler.spawnEnemy(enemy_x, enemy_y, enemy_colour, enemy_health, enemy_xspeed, enemy_yspeed, enemy_radius, enemy_damage, enemy_delay)
