@@ -38,17 +38,44 @@ function setStyle() {
 }
 
 
+// --- random nummer --- //
+function getRandomArbitrary(min, max) {
+  return Math.floor(Math.random() * (max - min) + min)
+}
+
+
+const colours = [
+  "92140C",
+  "297373",
+  "CF1259",
+  "7EBDC3",
+  "7BF1A8",
+  "90F1EF"
+]
+
+
 // --- spawnfunktion för fiender --- //
+let enemy_x = canvas.width
+let enemy_y = canvas.height / 2
+let enemy_colour = "red"
+let enemy_health = 3
+let enemy_xspeed = 3
+let enemy_yspeed = 3
+let enemy_radius = 40
+let enemy_damage = 1
+let enemy_delay = 11
+let timeTilRefresh = 0
 function enemySpawn() {
-  const enemy_x = canvas.width
-  const enemy_y = canvas.height / 2
-  const enemy_colour = "red"
-  const enemy_health = 3
-  const enemy_xspeed = 3
-  const enemy_yspeed = 7
-  const enemy_radius = 40
-  const enemy_damage = 1
-  const enemy_delay = 11
+  if (timeTilRefresh <= 0) {
+    enemy_colour = colours[getRandomArbitrary(1, 4)]
+    enemy_health = getRandomArbitrary(3, 5)
+    enemy_xspeed = getRandomArbitrary(1, 3)
+    enemy_yspeed = getRandomArbitrary(-7, 7)
+    enemy_radius = enemy_health * 10
+    enemy_delay = getRandomArbitrary(10, 15)
+    timeTilRefresh = 500
+  }
+  timeTilRefresh --
   enemyHandler.spawnEnemy(enemy_x, enemy_y, enemy_colour, enemy_health, enemy_xspeed, enemy_yspeed, enemy_radius, enemy_damage, enemy_delay)
 }
 
@@ -82,8 +109,6 @@ function gameLoop() {
     100
   )
 
-  c.fillStyle = "black"
-
   // --- kollosion --- //
   enemyHandler.enemies.forEach((enemy) => {
     if (bulletHandler.collideWith(enemy)) {
@@ -95,6 +120,7 @@ function gameLoop() {
     if (enemyHandler.playerCollide(player)) {
       if (player.health <= 0) {
       clearInterval(intervalID)
+      c.fillStyle = "black"
       c.fillRect(0, 0, canvas.width, canvas.height)
       c.fillStyle = "red"
       c.font = "75px Arial"
@@ -110,9 +136,9 @@ function gameLoop() {
 }
 
 // --- spelar musik --- //
-//var myMusic
-//myMusic = new sound("content/Guitarmass.mp3")
-//myMusic.play()
+var myMusic
+myMusic = new sound("content/Guitarmass.mp3")
+myMusic.play()
 
 
 // --- intervall --- //

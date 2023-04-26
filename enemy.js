@@ -42,17 +42,13 @@ export default class Enemy{
     // --- Hur fienden rör sig --- //
     movementPattern() {
         this.x -= this.xSpeed
-        this.altPattern_1()
-    }
-
-    altPattern_1() {
         if (this.y + this.radius > this.canvas_y)
-        this.ySpeed = 0 - this.ySpeed;
+        this.ySpeed = 0 - this.ySpeed
 
         if (this.y - this.radius < 0)
-        this.ySpeed = 0 - this.ySpeed;
+        this.ySpeed = 0 - this.ySpeed
 
-        this.y = this.y + this.ySpeed;
+        this.y = this.y + this.ySpeed
     }
 
 
@@ -61,8 +57,9 @@ export default class Enemy{
         this.health -= damage
     }
 
+
     playerCollide(sprite){
-        const dx = this.x - sprite.x - sprite.width / 2
+        const dx = this.x - sprite.x - sprite.width / 2 + 100
         const dy = this.y - sprite.y
         const distance = Math.sqrt(dx * dx + dy * dy)
         if(
