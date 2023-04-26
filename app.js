@@ -78,27 +78,30 @@ let enemy_delay
 let timeTilRefresh = 0
 let diffThreshold = 0
 let waveCounter = 0
+let score = 0
+
 // --- spawnfunktion för fiender --- //
 function enemySpawn() {
   // --- Slumpar fienders egenskaper --- //
   if (timeTilRefresh <= 0) {
     enemy_colour = colours[getRandomArbitrary(0, colours.length)]
     enemy_health = getRandomArbitrary(3 + diffThreshold, 5 + diffThreshold)
-    enemy_xspeed = getRandomArbitrary(3 + diffThreshold, 5 + diffThreshold)
-    enemy_yspeed = getRandomArbitrary(-6, 6)
+    enemy_xspeed = getRandomArbitrary(5 + diffThreshold, 10 + diffThreshold)
+    enemy_yspeed = getRandomArbitrary(-15, 15)
     enemy_radius = 30 + enemy_health * 5
-    enemy_damage = 1
+    enemy_damage = 10
     enemy_delay = getRandomArbitrary(15, 20)
     enemy_x = canvas.width + enemy_radius
     enemy_y = getRandomArbitrary(enemy_radius, canvas.height - enemy_radius)
-    timeTilRefresh = 100
+    timeTilRefresh = 150
     waveCounter += 1
   }
   // --- gör spelet svårare med tiden --- //
   if (waveCounter == 10){
-    player.damage += 0.5
     diffThreshold ++
     waveCounter = 0
+    enemy_damage += 2
+    player.damage += 0.5
   }
   timeTilRefresh --
   enemyHandler.spawnEnemy(enemy_x, enemy_y, enemy_colour, enemy_health, enemy_xspeed, enemy_yspeed, enemy_radius, enemy_damage, enemy_delay, canvas.width, canvas.height)
@@ -123,22 +126,29 @@ function gameLoop() {
   bulletHandler.draw(c)
   player.draw(c)
 
+  enemyHandler.draw(c)
+  enemySpawn()
+
+  c.shadowBlur = 0
   c.fillStyle = "white"
-  c.font = "75px Arial"
+  c.font = "75px Orbitron"
   c.fillText(
-    player.health,
+    player.health + " HP",
+    50,
+    200
+  )
+  c.fillText(
+    score,
     50,
     100
   )
-
-  enemyHandler.draw(c)
-  enemySpawn()
 
 
   // --- kollosion --- //
   enemyHandler.enemies.forEach((enemy) => {
     if (bulletHandler.collideWith(enemy)) {
       if(enemy.health <= 0) {
+        score += 100
         const index = enemyHandler.enemies.indexOf(enemy)
         enemyHandler.enemies.splice(index, 1)
       }
@@ -149,7 +159,8 @@ function gameLoop() {
       c.fillStyle = "black"
       c.fillRect(0, 0, canvas.width, canvas.height)
       c.fillStyle = "red"
-      c.font = "75px Arial"
+      c.shadowBlur = 10
+      c.font = "75px Orbitron"
       c.fillText(
           "You Are Dead",
           50,

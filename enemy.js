@@ -21,7 +21,7 @@ export default class Enemy{
         c.fillStyle = "black"
         c.lineWidth = this.health * 4
         c.shadowColor = this.colour
-        c.shadowBlur = 10
+        c.shadowBlur = 30
         c.beginPath()
         c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI)
 
