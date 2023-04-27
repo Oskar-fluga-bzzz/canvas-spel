@@ -1,49 +1,47 @@
 // --- import --- //
-import Bullet from "./Bullets.js"
-
+import Bullet from "./Bullets.js";
 
 export default class BulletHandler {
-    // --- array för skott --- //
-    bullets = []
-    timeTilNextShot = 0
+  // --- array för skott --- //
+  bullets = [];
+  timeTilNextShot = 0;
 
-    constructor(canvas){
-        this.canvas = canvas
+  constructor(canvas) {
+    this.canvas = canvas;
+  }
+
+  // --- gör så att det är lite tid mellan skott --- //
+  fire(x, y, speed, damage, delay) {
+    if (this.timeTilNextShot <= 0) {
+      this.bullets.push(new Bullet(x, y, speed, damage));
+      this.timeTilNextShot = delay;
     }
 
-    // --- gör så att det är lite tid mellan skott --- //
-    fire(x,y,speed,damage,delay) {
-        if (this.timeTilNextShot <= 0) {
-            this.bullets.push(new Bullet(x, y, speed, damage))
-            this.timeTilNextShot = delay
-        }
+    this.timeTilNextShot--;
+  }
 
-        this.timeTilNextShot--
-    }
+  // --- kollar om skottet fortfarande är på skärmen och tar bort det om det inte är på skärmen --- //
+  draw(c) {
+    this.bullets.forEach((bullet) => {
+      if (this.isBulletOffScreen(bullet)) {
+        const index = this.bullets.indexOf(bullet);
+        this.bullets.splice(index, 1);
+      }
+      bullet.draw(c);
+    });
+  }
 
-    // --- kollar om skottet fortfarande är på skärmen och tar bort det om det inte är på skärmen --- //
-    draw(c) {
-        this.bullets.forEach((bullet) => {
-            if(this.isBulletOffScreen(bullet)){
-                const index = this.bullets.indexOf(bullet)
-                this.bullets.splice(index, 1)
-            }    
-        bullet.draw(c)
-        })
-    }
+  isBulletOffScreen(bullet) {
+    return bullet.x >= this.canvas.width;
+  }
 
-
-    isBulletOffScreen(bullet){
-        return bullet.x >= this.canvas.width
-    }
-
-    collideWith(sprite) {
-        return this.bullets.some((bullet) =>{
-            if (bullet.collideWith(sprite)){
-                this.bullets.splice(this.bullets.indexOf(bullet), 1)
-                return true
-            }
-            return false
-        })
-    }
+  collideWith(sprite) {
+    return this.bullets.some((bullet) => {
+      if (bullet.collideWith(sprite)) {
+        this.bullets.splice(this.bullets.indexOf(bullet), 1);
+        return true;
+      }
+      return false;
+    });
+  }
 }

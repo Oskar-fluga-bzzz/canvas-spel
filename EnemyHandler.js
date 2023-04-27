@@ -1,47 +1,60 @@
 // --- import --- //
-import Enemy from "./enemy.js"
-
+import Enemy from "./enemy.js";
 
 // --- samma sak som bullet handler basically --- //
-export default class EnemyHandler{
-    enemies = []
-    timeTilNextSpawn = 0
+export default class EnemyHandler {
+  enemies = [];
+  timeTilNextSpawn = 0;
 
-    constructor(canvas){
-        this.canvas = canvas
+  constructor(canvas) {
+    this.canvas = canvas;
+  }
+
+  // --- Gör så att det är lite tid mellan fiender --- //
+  spawnEnemy(
+    x,
+    y,
+    colour,
+    health,
+    xspeed,
+    yspeed,
+    radius,
+    damage,
+    delay,
+    cx,
+    cy
+  ) {
+    if (this.timeTilNextSpawn <= 0) {
+      this.enemies.push(
+        new Enemy(x, y, colour, health, xspeed, yspeed, radius, damage, cx, cy)
+      );
+      this.timeTilNextSpawn = delay;
     }
+    this.timeTilNextSpawn--;
+  }
 
-    // --- Gör så att det är lite tid mellan fiender --- //
-    spawnEnemy(x, y, colour, health, xspeed, yspeed, radius, damage, delay, cx, cy) {
-                if (this.timeTilNextSpawn <= 0) {
-                    this.enemies.push(new Enemy(x, y, colour, health, xspeed, yspeed, radius, damage, cx, cy))
-                    this.timeTilNextSpawn = delay
-                }
-                this.timeTilNextSpawn--
-        }
+  // --- kollar om fienden har lämnat skärmen ---  //
+  draw(c) {
+    this.enemies.forEach((enemy) => {
+      if (this.isEnemyOffscreen(enemy)) {
+        const index = this.enemies.indexOf(enemy);
+        this.enemies.splice(index, 1);
+      }
+      enemy.draw(c);
+    });
+  }
 
-        // --- kollar om fienden har lämnat skärmen ---  //
-        draw(c) {
-            this.enemies.forEach((enemy) => {
-                if(this.isEnemyOffscreen(enemy)){
-                    const index = this.enemies.indexOf(enemy)
-                    this.enemies.splice(index, 1)
-                }
-            enemy.draw(c)
-            })
-        }
+  isEnemyOffscreen(enemy) {
+    return enemy.x <= 0;
+  }
 
-        isEnemyOffscreen(enemy){
-            return enemy.x <= 0
-        }
-
-        playerCollide(sprite) {
-            return this.enemies.some((enemy) =>{
-                if (enemy.playerCollide(sprite)){
-                    this.enemies.splice(this.enemies.indexOf(enemy), 1)
-                    return true
-                }
-                return false
-            })
-        }
-    }
+  playerCollide(sprite) {
+    return this.enemies.some((enemy) => {
+      if (enemy.playerCollide(sprite)) {
+        this.enemies.splice(this.enemies.indexOf(enemy), 1);
+        return true;
+      }
+      return false;
+    });
+  }
+}
