@@ -9,7 +9,7 @@ export default class Player {
     this.width = 80;
     this.height = 60;
     this.speed = 10;
-    this.health = 100;
+    this.health = 0;
     this.damage = 1;
 
     document.addEventListener("keydown", this.keydown);
@@ -21,9 +21,16 @@ export default class Player {
     this.move();
 
     c.shadowColor = "white";
-    c.shadowBlur = 10;
     c.strokeStyle = "white";
     c.fillStyle = "white";
+    c.shadowBlur = this.health / 2;
+    if (this.health <= 30) {
+      c.shadowColor = "red"
+      c.fillStyle = "red"
+      c.strokeStyle = "red"
+    } else if (this.health > 100) {
+      this.health = 100
+    }
     c.beginPath();
     c.moveTo(this.x, this.y + this.height / 2);
     c.lineTo(this.x + this.width, this.y);

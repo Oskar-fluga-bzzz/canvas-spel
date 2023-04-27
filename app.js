@@ -88,7 +88,7 @@ function enemySpawn() {
     enemy_delay = getRandomArbitrary(15, 20);
     enemy_x = canvas.width + enemy_radius;
     enemy_y = getRandomArbitrary(enemy_radius, canvas.height - enemy_radius);
-    timeTilRefresh = 150;
+    timeTilRefresh = 100;
     waveCounter += 1;
   }
   // --- gör spelet svårare med tiden --- //
@@ -122,6 +122,23 @@ const player = new Player(canvas.width / 7, canvas.height / 2, bulletHandler);
 // --- fiender --- //
 const enemyHandler = new EnemyHandler(canvas);
 
+
+// --- meny --- //
+function menu () {
+  c.fillStyle = "white";
+  c.font = "50px Orbitron";
+  c.fillText("Press Enter to Start", canvas.width / 4, canvas.height / 2);
+  document.addEventListener('keyup', (event) => {
+    if (player.health <= 0 && event.key === "Enter"){
+      player.health = 100
+      intervalID = setInterval(gameLoop, 1000 / 60)
+      myMusic.play();
+    }
+  }, false);
+  }
+  menu()
+
+
 // --- main loop --- //
 function gameLoop() {
   setStyle();
@@ -153,7 +170,7 @@ function gameLoop() {
   // --- kollosion --- //
   enemyHandler.enemies.forEach((enemy) => {
     if (bulletHandler.collideWith(enemy)) {
-      score += 1;
+      score += 10;
       if (enemy.health <= 0) {
         score += 100;
         const index = enemyHandler.enemies.indexOf(enemy);
@@ -170,17 +187,28 @@ function gameLoop() {
         c.shadowColor = "red";
         c.font = "50px Orbitron";
         c.fillText("You Are Dead", 50, 100);
-        c.fillText("Press Space to Restart", 50, canvas.height - 50);
+        c.fillText("Press Enter to Restart", 50, canvas.height - 50);
+        myMusic.stop()
       }
     }
   });
 }
 
+
+// reset
+function reset() {
+document.addEventListener('keyup', (event) => {
+  if (player.health <= 0 && event.key === "Enter"){
+    window.location.reload(true);
+    timeTilRefresh = 0
+  }
+}, false);
+}
+reset()
+
 // --- spelar musik --- //
 var myMusic;
 myMusic = new sound("stolen assets/Guitarmass.mp3");
-myMusic.play();
 
 // --- intervall --- //
 let intervalID;
-intervalID = setInterval(gameLoop, 1000 / 60);
