@@ -88,11 +88,11 @@ function enemySpawn() {
     enemy_delay = getRandomArbitrary(15, 20);
     enemy_x = canvas.width + enemy_radius;
     enemy_y = getRandomArbitrary(enemy_radius, canvas.height - enemy_radius);
-    timeTilRefresh = 100;
+    timeTilRefresh = 75;
     waveCounter += 1;
   }
   // --- gör spelet svårare med tiden --- //
-  if (waveCounter == 10) {
+  if (waveCounter == 20) {
     diffThreshold++;
     waveCounter = 0;
     enemy_damage += 2;
@@ -124,19 +124,20 @@ const enemyHandler = new EnemyHandler(canvas);
 
 
 // --- meny --- //
-function menu () {
+function menu() {
   c.fillStyle = "white";
   c.font = "50px Orbitron";
   c.fillText("Press Enter to Start", canvas.width / 4, canvas.height / 2);
   document.addEventListener('keyup', (event) => {
-    if (player.health <= 0 && event.key === "Enter"){
+    if (player.health <= 0 && event.key === "Enter") {
       player.health = 100
       intervalID = setInterval(gameLoop, 1000 / 60)
+      myMusic = new sound("stolen assets/Guitarmass.mp3");
       myMusic.play();
     }
   }, false);
-  }
-  menu()
+}
+menu()
 
 
 // --- main loop --- //
@@ -154,13 +155,15 @@ function gameLoop() {
   if (score >= canvas.width) {
     score = 0;
     level += 1;
-    player.health += 5;
-    player.damage += 0.05;
+    player.health += 2;
+    player.damage += 0.08;
   }
 
+  // --- spawnar fiender --- //
   enemyHandler.draw(c);
   enemySpawn();
 
+  // --- user interface --- //
   c.shadowBlur = 0;
   c.fillStyle = "white";
   c.font = "50px Orbitron";
@@ -178,8 +181,21 @@ function gameLoop() {
       }
     }
     if (enemyHandler.playerCollide(player)) {
+      // --- om spelaren dör --- //
       if (player.health <= 0) {
         clearInterval(intervalID);
+        // --- tar bort fiender och skott --- //
+        enemyHandler.enemies = []
+        bulletHandler.bullets = []
+        player.x = canvas.width / 7
+        player.y = canvas.height / 2
+        // --- ställer om spelet --- //
+        timeTilRefresh = 0;
+        diffThreshold = 0;
+        waveCounter = 0;
+        score = 0;
+        level = 0;
+        // --- ändrar till döds-skärmen --- //
         c.fillStyle = "black";
         c.fillRect(0, 0, canvas.width, canvas.height);
         c.fillStyle = "red";
@@ -188,6 +204,7 @@ function gameLoop() {
         c.font = "50px Orbitron";
         c.fillText("You Are Dead", 50, 100);
         c.fillText("Press Enter to Restart", 50, canvas.height - 50);
+        // --- stoppar musiken --- //
         myMusic.stop()
       }
     }
@@ -197,18 +214,20 @@ function gameLoop() {
 
 // reset
 function reset() {
-document.addEventListener('keyup', (event) => {
-  if (player.health <= 0 && event.key === "Enter"){
-    window.location.reload(true);
-    timeTilRefresh = 0
-  }
-}, false);
+  document.addEventListener('keyup', (event) => {
+    if (player.health <= 0 && event.key === "Enter") {
+      window.location.reload(true);
+      timeTilRefresh = 0
+    }
+  }, false);
 }
 reset()
+
 
 // --- spelar musik --- //
 var myMusic;
 myMusic = new sound("stolen assets/Guitarmass.mp3");
+
 
 // --- intervall --- //
 let intervalID;
