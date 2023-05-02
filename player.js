@@ -23,7 +23,7 @@ export default class Player {
     c.shadowColor = "white";
     c.strokeStyle = "white";
     c.fillStyle = "white";
-    c.shadowBlur = this.health / 2;
+    c.shadowBlur = this.damage + this.health / 2;
     if (this.health <= 30) {
       c.shadowColor = "red"
       c.fillStyle = "red"

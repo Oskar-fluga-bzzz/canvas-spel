@@ -88,14 +88,15 @@ function enemySpawn() {
     enemy_delay = getRandomArbitrary(15, 20);
     enemy_x = canvas.width + enemy_radius;
     enemy_y = getRandomArbitrary(enemy_radius, canvas.height - enemy_radius);
-    timeTilRefresh = 75;
+    timeTilRefresh = 50;
     waveCounter += 1;
   }
   // --- gör spelet svårare med tiden --- //
-  if (waveCounter == 20) {
+  if (waveCounter == 10) {
     diffThreshold++;
     waveCounter = 0;
     enemy_damage += 2;
+    waveBoss()
   }
   timeTilRefresh--;
   enemyHandler.spawnEnemy(
@@ -111,6 +112,22 @@ function enemySpawn() {
     canvas.width,
     canvas.height
   );
+}
+
+function waveBoss(){
+  enemyHandler.spawnEnemy(
+    canvas.width,
+    canvas.height / 2,
+    "red",
+    40,
+    4,
+    0,
+    100,
+    50,
+    0,
+    canvas.width,
+    canvas.height
+  )
 }
 
 // --- hanterar skott --- //
@@ -163,7 +180,7 @@ function gameLoop() {
   enemyHandler.draw(c);
   enemySpawn();
 
-  // --- user interface --- //
+  // --- ui --- //
   c.shadowBlur = 0;
   c.fillStyle = "white";
   c.font = "50px Orbitron";
@@ -176,7 +193,7 @@ function gameLoop() {
     if (bulletHandler.collideWith(enemy)) {
       score += 10;
       if (enemy.health <= 0) {
-        score += 100;
+        score += 50;
         const index = enemyHandler.enemies.indexOf(enemy);
         enemyHandler.enemies.splice(index, 1);
       }
@@ -190,7 +207,7 @@ function gameLoop() {
   });
 }
 
-// reset
+// --- starta om --- //
 function reset() {
   document.addEventListener('keyup', (event) => {
     if (player.health <= 0 && event.key === "Enter") {
@@ -202,7 +219,7 @@ function reset() {
 reset()
 
 
-// --- death --- //
+// --- spelaren dör --- //
 function playerDeath () {
 clearInterval(intervalID);
 // --- tar bort fiender och skott --- //
