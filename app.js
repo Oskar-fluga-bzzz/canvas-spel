@@ -156,7 +156,7 @@ function gameLoop() {
     score = 0;
     level += 1;
     player.health += 2;
-    player.damage += 0.08;
+    player.damage += 0.06;
   }
 
   // --- spawnar fiender --- //
@@ -169,6 +169,7 @@ function gameLoop() {
   c.font = "50px Orbitron";
   c.fillText("HP: " + player.health, 25, 100);
   c.fillText("LVL: " + level, 25, 50);
+
 
   // --- kollosion --- //
   enemyHandler.enemies.forEach((enemy) => {
@@ -183,34 +184,11 @@ function gameLoop() {
     if (enemyHandler.playerCollide(player)) {
       // --- om spelaren dör --- //
       if (player.health <= 0) {
-        clearInterval(intervalID);
-        // --- tar bort fiender och skott --- //
-        enemyHandler.enemies = []
-        bulletHandler.bullets = []
-        player.x = canvas.width / 7
-        player.y = canvas.height / 2
-        // --- ställer om spelet --- //
-        timeTilRefresh = 0;
-        diffThreshold = 0;
-        waveCounter = 0;
-        score = 0;
-        level = 0;
-        // --- ändrar till döds-skärmen --- //
-        c.fillStyle = "black";
-        c.fillRect(0, 0, canvas.width, canvas.height);
-        c.fillStyle = "red";
-        c.shadowBlur = 10;
-        c.shadowColor = "red";
-        c.font = "50px Orbitron";
-        c.fillText("You Are Dead", 50, 100);
-        c.fillText("Press Enter to Restart", 50, canvas.height - 50);
-        // --- stoppar musiken --- //
-        myMusic.stop()
+        playerDeath()
       }
     }
   });
 }
-
 
 // reset
 function reset() {
@@ -222,6 +200,34 @@ function reset() {
   }, false);
 }
 reset()
+
+
+// --- death --- //
+function playerDeath () {
+clearInterval(intervalID);
+// --- tar bort fiender och skott --- //
+enemyHandler.enemies = []
+bulletHandler.bullets = []
+player.x = canvas.width / 7
+player.y = canvas.height / 2
+// --- ställer om spelet --- //
+timeTilRefresh = 0;
+diffThreshold = 0;
+waveCounter = 0;
+score = 0;
+level = 0;
+// --- ändrar till döds-skärmen --- //
+c.fillStyle = "black";
+c.fillRect(0, 0, canvas.width, canvas.height);
+c.fillStyle = "red";
+c.shadowBlur = 10;
+c.shadowColor = "red";
+c.font = "50px Orbitron";
+c.fillText("You Are Dead", 50, 100);
+c.fillText("Press Enter to Restart", 50, canvas.height - 50);
+// --- stoppar musiken --- //
+myMusic.stop()
+}
 
 
 // --- spelar musik --- //
