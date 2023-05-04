@@ -80,15 +80,15 @@ function enemySpawn() {
   // --- Slumpar fienders egenskaper --- //
   if (timeTilRefresh <= 0) {
     enemy_colour = colours[getRandomArbitrary(0, colours.length)];
-    enemy_health = getRandomArbitrary(3 + diffThreshold, 5 + diffThreshold);
-    enemy_xspeed = getRandomArbitrary(5 + diffThreshold, 10 + diffThreshold);
+    enemy_health = getRandomArbitrary(2 + diffThreshold, 4 + diffThreshold);
+    enemy_xspeed = getRandomArbitrary(3 + diffThreshold, 7 + diffThreshold);
     enemy_yspeed = getRandomArbitrary(-15, 15);
-    enemy_radius = 30 + enemy_health * 5;
+    enemy_radius = 30 + enemy_health * 3;
     enemy_damage = 10;
-    enemy_delay = getRandomArbitrary(15, 20);
+    enemy_delay = getRandomArbitrary(10, 15);
     enemy_x = canvas.width + enemy_radius;
     enemy_y = getRandomArbitrary(enemy_radius, canvas.height - enemy_radius);
-    timeTilRefresh = 50;
+    timeTilRefresh = 100;
     waveCounter += 1;
   }
   // --- gör spelet svårare med tiden --- //
@@ -96,7 +96,7 @@ function enemySpawn() {
     diffThreshold++;
     waveCounter = 0;
     enemy_damage += 2;
-    waveBoss()
+    waveBoss();
   }
   timeTilRefresh--;
   enemyHandler.spawnEnemy(
@@ -114,12 +114,12 @@ function enemySpawn() {
   );
 }
 
-function waveBoss(){
+function waveBoss() {
   enemyHandler.spawnEnemy(
     canvas.width,
     canvas.height / 2,
     "red",
-    40,
+    20,
     4,
     0,
     100,
@@ -127,7 +127,7 @@ function waveBoss(){
     0,
     canvas.width,
     canvas.height
-  )
+  );
 }
 
 // --- hanterar skott --- //
@@ -139,23 +139,26 @@ const player = new Player(canvas.width / 7, canvas.height / 2, bulletHandler);
 // --- fiender --- //
 const enemyHandler = new EnemyHandler(canvas);
 
-
 // --- meny --- //
 function menu() {
   c.fillStyle = "white";
   c.font = "50px Orbitron";
   c.fillText("Press Enter to Start", canvas.width / 4, canvas.height / 2);
-  document.addEventListener('keyup', (event) => {
-    if (player.health <= 0 && event.key === "Enter") {
-      player.health = 100
-      intervalID = setInterval(gameLoop, 1000 / 60)
-      myMusic = new sound("stolen assets/Guitarmass.mp3");
-      myMusic.play();
-    }
-  }, false);
+  
+  document.addEventListener(
+    "keyup",
+    (event) => {
+      if (player.health <= 0 && event.key === "Enter") {
+        player.health = 100;
+        intervalID = setInterval(gameLoop, 1000 / 60);
+        myMusic = new sound("stolen assets/Guitarmass.mp3");
+        myMusic.play();
+      }
+    },
+    false
+  );
 }
-menu()
-
+menu();
 
 // --- main loop --- //
 function gameLoop() {
@@ -172,8 +175,8 @@ function gameLoop() {
   if (score >= canvas.width) {
     score = 0;
     level += 1;
-    player.health += 2;
-    player.damage += 0.06;
+    player.health += 5;
+    player.damage += 0.1;
   }
 
   // --- spawnar fiender --- //
@@ -186,7 +189,6 @@ function gameLoop() {
   c.font = "50px Orbitron";
   c.fillText("HP: " + player.health, 25, 100);
   c.fillText("LVL: " + level, 25, 50);
-
 
   // --- kollosion --- //
   enemyHandler.enemies.forEach((enemy) => {
@@ -201,7 +203,7 @@ function gameLoop() {
     if (enemyHandler.playerCollide(player)) {
       // --- om spelaren dör --- //
       if (player.health <= 0) {
-        playerDeath()
+        playerDeath();
       }
     }
   });
@@ -209,48 +211,49 @@ function gameLoop() {
 
 // --- starta om --- //
 function reset() {
-  document.addEventListener('keyup', (event) => {
-    if (player.health <= 0 && event.key === "Enter") {
-      window.location.reload(true);
-      timeTilRefresh = 0
-    }
-  }, false);
+  document.addEventListener(
+    "keyup",
+    (event) => {
+      if (player.health <= 0 && event.key === "Enter") {
+        window.location.reload(true);
+        timeTilRefresh = 0;
+      }
+    },
+    false
+  );
 }
-reset()
-
+reset();
 
 // --- spelaren dör --- //
-function playerDeath () {
-clearInterval(intervalID);
-// --- tar bort fiender och skott --- //
-enemyHandler.enemies = []
-bulletHandler.bullets = []
-player.x = canvas.width / 7
-player.y = canvas.height / 2
-// --- ställer om spelet --- //
-timeTilRefresh = 0;
-diffThreshold = 0;
-waveCounter = 0;
-score = 0;
-level = 0;
-// --- ändrar till döds-skärmen --- //
-c.fillStyle = "black";
-c.fillRect(0, 0, canvas.width, canvas.height);
-c.fillStyle = "red";
-c.shadowBlur = 10;
-c.shadowColor = "red";
-c.font = "50px Orbitron";
-c.fillText("You Are Dead", 50, 100);
-c.fillText("Press Enter to Restart", 50, canvas.height - 50);
-// --- stoppar musiken --- //
-myMusic.stop()
+function playerDeath() {
+  clearInterval(intervalID);
+  // --- tar bort fiender och skott --- //
+  enemyHandler.enemies = [];
+  bulletHandler.bullets = [];
+  player.x = canvas.width / 7;
+  player.y = canvas.height / 2;
+  // --- ställer om spelet --- //
+  timeTilRefresh = 0;
+  diffThreshold = 0;
+  waveCounter = 0;
+  score = 0;
+  level = 0;
+  // --- ändrar till döds-skärmen --- //
+  c.fillStyle = "black";
+  c.fillRect(0, 0, canvas.width, canvas.height);
+  c.fillStyle = "red";
+  c.shadowBlur = 10;
+  c.shadowColor = "red";
+  c.font = "50px Orbitron";
+  c.fillText("You Are Dead", 50, 100);
+  c.fillText("Press Enter to Try Again", 50, canvas.height - 50);
+  // --- stoppar musiken --- //
+  myMusic.stop();
 }
-
 
 // --- spelar musik --- //
 var myMusic;
 myMusic = new sound("stolen assets/Guitarmass.mp3");
-
 
 // --- intervall --- //
 let intervalID;

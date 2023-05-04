@@ -45,10 +45,21 @@ export default class Enemy {
   }
 
   playerCollide(sprite) {
-    const dx = this.x - sprite.x - sprite.width / 2;
-    const dy = this.y - sprite.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    if (distance <= sprite.height + this.radius - 50) {
+    const dx1 = this.x - sprite.x;
+    const dy1 = this.y - sprite.y - sprite.height / 2;
+    const dx2 = this.x - sprite.x - sprite.width;
+    const dy2 = this.y - sprite.y;
+    const dx3 = this.x - sprite.x;
+    const dy3 = this.y - sprite.y + sprite.height / 2;
+
+    const distance_1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+    const distance_2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+    const distance_3 = Math.sqrt(dx3 * dx3 + dy3 * dy3);
+    if (
+      distance_1 <= this.radius ||
+      distance_2 <= this.radius ||
+      distance_3 <= this.radius
+    ) {
       sprite.health -= this.damage;
       return true;
     }
