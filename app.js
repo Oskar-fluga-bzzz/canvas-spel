@@ -74,6 +74,7 @@ let diffThreshold = 0;
 let waveCounter = 0;
 let score = 0;
 let level = 0;
+let attemptCount = 1
 
 // --- spawnfunktion för fiender --- //
 function enemySpawn() {
@@ -96,7 +97,7 @@ function enemySpawn() {
     diffThreshold++;
     waveCounter = 0;
     enemy_damage += 2;
-    waveBoss();
+    waveBoss(diffThreshold);
   }
   timeTilRefresh--;
   enemyHandler.spawnEnemy(
@@ -114,13 +115,13 @@ function enemySpawn() {
   );
 }
 
-function waveBoss() {
+function waveBoss(dt) {
   enemyHandler.spawnEnemy(
     canvas.width,
     canvas.height / 2,
     "red",
-    20,
-    4,
+    20 + dt * 7,
+    4 + dt * 3,
     0,
     100,
     50,
@@ -187,8 +188,9 @@ function gameLoop() {
   c.shadowBlur = 0;
   c.fillStyle = "white";
   c.font = "50px Orbitron";
-  c.fillText("HP: " + player.health, 25, 100);
-  c.fillText("LVL: " + level, 25, 50);
+  c.fillText("Attempt " + attemptCount, 25, 50)
+  c.fillText("HP: " + player.health, 25, 150);
+  c.fillText("LVL: " + level, 25, 100);
 
   // --- kollosion --- //
   enemyHandler.enemies.forEach((enemy) => {
@@ -233,6 +235,7 @@ function playerDeath() {
   player.x = canvas.width / 7;
   player.y = canvas.height / 2;
   // --- ställer om spelet --- //
+  attemptCount += 1
   timeTilRefresh = 0;
   diffThreshold = 0;
   waveCounter = 0;
