@@ -10,7 +10,7 @@ export default class Player {
     this.height = 60;
     this.speed = 10;
     this.health = 0;
-    this.damage = 1.3;
+    this.damage = 1;
 
     document.addEventListener("keydown", this.keydown);
     document.addEventListener("keyup", this.keyup);

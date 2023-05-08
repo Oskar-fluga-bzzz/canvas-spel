@@ -99,102 +99,25 @@ body:after {
 }
 @keyframes blur {
   0% {
-    filter: blur(1px);
-    opacity: 0.8;
+    filter: blur(0.6px);
+    opacity: 0.9;
   }
   50% {
-    filter: blur(1px);
+    filter: blur(0.6px);
     opacity: 1;
   }
   100% {
-    filter: blur(1px);
-    opacity: 0.8;
+    filter: blur(0.6px);
+    opacity: 0.9;
   }
 }
-@keyframes flick {
-  50% {
-    left: 2px;
-  }
-  51% {
-    left: 0;
-  }
-}
-@keyframes jump {
-  30% {
-    top: 10px;
-  }
-  31% {
-    top: 0;
-  }
-}
-
-//From Greg Opperman
-//https://codepen.io/gopperman/pen/dElzr?editors=001
-@keyframes track {
-  40% {
-    opacity: 1;
-    top: 0;
-    left: 0;
-    transform: scale(1, 1);
-    transform: skew(0, 0);
-  }
-  41% {
-    opacity: 0.8;
-    top: 0px;
-    left: -100px;
-    transform: scale(1, 1.2);
-    transform: skew(50deg, 0);
-  }
-  42% {
-    opacity: 0.8;
-    top: 0px;
-    left: 100px;
-    transform: scale(1, 1.2);
-    transform: skew(-80deg, 0);
-  }
-  43% {
-    opacity: 1;
-    top: 0;
-    left: 0;
-    transform: scale(1, 1);
-    transform: skew(0, 0);
-  }
-}
-
-//Lines
 .screen-bottom {
   position: fixed;
   bottom: 0;
   width: 100%;
 }
 
-.line {
-  width: 100%;
-  height: 3px;
-  position: relative;
-  animation: appear 1s infinite, flick 1s infinite, big-jump 5ms infinite;
-  .white {
-    background: white;
-    position: relative;
-    top: 0;
-    left: 0;
-    height: 4px;
-  }
-  .red {
-    background: red;
-    position: relative;
-    top: 0;
-    left: 0;
-    height: 1px;
-  }
-  .green {
-    background: green;
-    position: relative;
-    top: 0;
-    left: 0;
-    height: 1px;
-  }
-}
+
 @keyframes appear {
   0% {
     filter: blur(5px);
@@ -210,32 +133,3 @@ body:after {
   }
 }
 
-@keyframes big-jump {
-  0% {
-    top: 0;
-  }
-  10% {
-    top: -100px;
-  }
-  12% {
-    top: 0;
-  }
-  54% {
-    top: 0;
-  }
-  55% {
-    top: -300px;
-  }
-  56% {
-    top: 0;
-  }
-  86% {
-    top: 0;
-  }
-  87% {
-    top: -600px;
-  }
-  88% {
-    top: 0;
-  }
-}

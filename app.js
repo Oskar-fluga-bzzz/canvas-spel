@@ -81,9 +81,9 @@ function enemySpawn() {
   // --- Slumpar fienders egenskaper --- //
   if (timeTilRefresh <= 0) {
     enemy_colour = colours[getRandomArbitrary(0, colours.length)];
-    enemy_health = getRandomArbitrary(2 + diffThreshold, 4 + diffThreshold);
-    enemy_xspeed = getRandomArbitrary(2, 4);
-    enemy_yspeed = getRandomArbitrary(-20 + diffThreshold, 20 + diffThreshold);
+    enemy_health = getRandomArbitrary(3 + diffThreshold, 4 + diffThreshold);
+    enemy_xspeed = getRandomArbitrary(1, 3);
+    enemy_yspeed = getRandomArbitrary(-10 + diffThreshold, 10 + diffThreshold);
     enemy_radius = 30 + enemy_health * 3;
     enemy_damage = 10;
     enemy_delay = getRandomArbitrary(10, 15);
@@ -184,7 +184,7 @@ function gameLoop() {
     score = 0;
     level += 1;
     player.health += 5;
-    player.damage += 0.1;
+    player.damage += 0.07;
   }
 
   // --- spawnar fiender --- //
@@ -198,6 +198,8 @@ function gameLoop() {
   c.fillText("Game " + attemptCount, 25, 50);
   c.fillText("HP: " + player.health, 25, 150);
   c.fillText("LVL: " + level, 25, 100);
+
+  displayTips();
 
   // --- kollosion --- //
   enemyHandler.enemies.forEach((enemy) => {
@@ -220,18 +222,39 @@ function gameLoop() {
 
 // --- Lista med Tips --- //
 const tipArray = [
-  "You can make all sorts of explosives using household items"
-]
+  "Press the Arrow Keys to move",
+  "You can fire bullets at enemies to eliminate them",
+  "Hold down the Spacebar to shoot",
+  "You deal more damage when you level up",
+  "Reaching a new level restores some health",
+  "You lose when your health reaches zero",
+  "Your maximum health is 100",
+  "The game becomes harder as you keep playing it",
+  "Enemies come in all sorts of colours",
 
+  "One could make all kinds of explosives, using simple household items",
+  "Chlorine gas can be created by mixing bleach with ammonia",
+  "Approximately 1 in 5 adults in the US experience mental illness in a given year",
+  "Over 40 million people worldwide are victims of modern slavery",
+
+  "Think about all the things that went wrong in your life",
+  "Avoid doing things that make you happy",
+  "Focus on your mistakes rather than your accomplishments",
+  "Give up on your dreams",
+];
 
 // --- visar tips --- //
-let tipTimer
+let tipTimer = 0;
+let currentTip = "";
 function displayTips() {
   if (tipTimer <= 0) {
-    currentTip = tipArray[getRandomArbitrary(0, tipArray.length)]
+    currentTip = tipArray[getRandomArbitrary(0, tipArray.length)];
+    tipTimer = 500;
   }
-  c.font = "20px Orbitron"
-  c.fillText(currentTip, 100, 100)
+  tipTimer--;
+  c.fillStyle = "white";
+  c.font = "24px Orbitron";
+  c.fillText("Fun Tip:  " + currentTip, 25, canvas.height - 25);
 }
 
 // --- starta om --- //
