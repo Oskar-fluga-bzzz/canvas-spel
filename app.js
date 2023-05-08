@@ -74,7 +74,7 @@ let diffThreshold = 0;
 let waveCounter = 0;
 let score = 0;
 let level = 0;
-let attemptCount = 1
+let attemptCount = 1;
 
 // --- spawnfunktion för fiender --- //
 function enemySpawn() {
@@ -82,8 +82,8 @@ function enemySpawn() {
   if (timeTilRefresh <= 0) {
     enemy_colour = colours[getRandomArbitrary(0, colours.length)];
     enemy_health = getRandomArbitrary(2 + diffThreshold, 4 + diffThreshold);
-    enemy_xspeed = getRandomArbitrary(3 + diffThreshold, 7 + diffThreshold);
-    enemy_yspeed = getRandomArbitrary(-15, 15);
+    enemy_xspeed = getRandomArbitrary(2, 4);
+    enemy_yspeed = getRandomArbitrary(-20 + diffThreshold, 20 + diffThreshold);
     enemy_radius = 30 + enemy_health * 3;
     enemy_damage = 10;
     enemy_delay = getRandomArbitrary(10, 15);
@@ -99,6 +99,7 @@ function enemySpawn() {
     enemy_damage += 2;
     waveBoss(diffThreshold);
   }
+
   timeTilRefresh--;
   enemyHandler.spawnEnemy(
     enemy_x,
@@ -120,8 +121,8 @@ function waveBoss(dt) {
     canvas.width,
     canvas.height / 2,
     "red",
-    20 + dt * 7,
-    4 + dt * 3,
+    20 + dt * 2,
+    2 + dt * 2,
     0,
     100,
     50,
@@ -144,8 +145,14 @@ const enemyHandler = new EnemyHandler(canvas);
 function menu() {
   c.fillStyle = "white";
   c.font = "50px Orbitron";
-  c.fillText("Press Enter to Start", canvas.width / 4, canvas.height / 2);
-  
+  c.fillText("Press Enter to Start", canvas.width / 4, canvas.height / 1.65);
+  c.font = "20px Orbitron";
+  c.fillText(
+    "Move with the Arrow Keys, hold the Spacebar to fire",
+    canvas.width / 4,
+    canvas.height / 2
+  );
+
   document.addEventListener(
     "keyup",
     (event) => {
@@ -188,7 +195,7 @@ function gameLoop() {
   c.shadowBlur = 0;
   c.fillStyle = "white";
   c.font = "50px Orbitron";
-  c.fillText("Attempt " + attemptCount, 25, 50)
+  c.fillText("Game " + attemptCount, 25, 50);
   c.fillText("HP: " + player.health, 25, 150);
   c.fillText("LVL: " + level, 25, 100);
 
@@ -209,6 +216,22 @@ function gameLoop() {
       }
     }
   });
+}
+
+// --- Lista med Tips --- //
+const tipArray = [
+  "You can make all sorts of explosives using household items"
+]
+
+
+// --- visar tips --- //
+let tipTimer
+function displayTips() {
+  if (tipTimer <= 0) {
+    currentTip = tipArray[getRandomArbitrary(0, tipArray.length)]
+  }
+  c.font = "20px Orbitron"
+  c.fillText(currentTip, 100, 100)
 }
 
 // --- starta om --- //
@@ -235,7 +258,7 @@ function playerDeath() {
   player.x = canvas.width / 7;
   player.y = canvas.height / 2;
   // --- ställer om spelet --- //
-  attemptCount += 1
+  attemptCount += 1;
   timeTilRefresh = 0;
   diffThreshold = 0;
   waveCounter = 0;
