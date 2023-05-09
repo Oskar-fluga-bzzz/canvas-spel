@@ -25,11 +25,11 @@ export default class Player {
     c.fillStyle = "white";
     c.shadowBlur = this.damage + this.health / 2;
     if (this.health <= 30) {
-      c.shadowColor = "red"
-      c.fillStyle = "red"
-      c.strokeStyle = "red"
+      c.shadowColor = "red";
+      c.fillStyle = "red";
+      c.strokeStyle = "red";
     } else if (this.health > 100) {
-      this.health = 100
+      this.health = 100;
     }
     c.beginPath();
     c.moveTo(this.x, this.y + this.height / 2);
@@ -37,14 +37,6 @@ export default class Player {
     c.lineTo(this.x, this.y - this.height / 2);
     c.closePath();
     c.fill();
-
-    /*         const img = new Image()
-        img.onload = () => {
-            c.beginPath()
-              c.drawImage(img, this.x, this.y - 100)
-              c.closePath()
-        };
-        img.src = "stolen assets/ship.png" */
 
     this.fire(this.damage);
   }
@@ -67,7 +59,10 @@ export default class Player {
       this.y = Math.max(this.y - this.speed, this.height / 2);
     }
     if (this.downPress) {
-      this.y = Math.min(this.y + this.speed, this.canvas_y - this.height / 2);
+      this.y = Math.min(
+        this.y + this.speed,
+        this.canvas_y - this.height / 2 - 50
+      );
     }
     if (this.leftPress) {
       this.x = Math.max(this.x - this.speed, 0);
@@ -89,6 +84,8 @@ export default class Player {
       this.rightPress = true;
     } else if (e.code === "Space" || e.code === " ") {
       this.spacePress = true;
+    } else if (e.code === "KeyT") {
+      this.turboPress = true;
     }
   };
 
@@ -104,6 +101,8 @@ export default class Player {
       this.rightPress = false;
     } else if (e.code === "Space" || e.code === " ") {
       this.spacePress = false;
+    } else if (e.code === "KeyT") {
+      this.turboPress = false;
     }
   };
 }

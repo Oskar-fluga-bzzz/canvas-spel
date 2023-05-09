@@ -2,6 +2,7 @@
 import Player from "./player.js";
 import BulletHandler from "./BulletHandler.js";
 import EnemyHandler from "./EnemyHandler.js";
+import funTips from "./funtips.js";
 
 // --- canvas fönstret --- //
 const canvas = document.getElementById("canvas");
@@ -25,13 +26,6 @@ function sound(src) {
   this.stop = function () {
     this.sound.pause();
   };
-}
-
-// --- ändrar utseendet lite --- //
-function setStyle() {
-  c.shadowBlur = 0;
-  c.lineJoin = "bevel";
-  c.lineWidth = 10;
 }
 
 // --- random nummer --- //
@@ -74,6 +68,7 @@ let diffThreshold = 0;
 let waveCounter = 0;
 let score = 0;
 let level = 0;
+let turboMeter = 0;
 let attemptCount = 1;
 
 // --- spawnfunktion för fiender --- //
@@ -88,7 +83,10 @@ function enemySpawn() {
     enemy_damage = 10;
     enemy_delay = getRandomArbitrary(10, 15);
     enemy_x = canvas.width + enemy_radius;
-    enemy_y = getRandomArbitrary(enemy_radius, canvas.height - enemy_radius);
+    enemy_y = getRandomArbitrary(
+      enemy_radius,
+      canvas.height - enemy_radius - 50
+    );
     timeTilRefresh = 100;
     waveCounter += 1;
   }
@@ -132,6 +130,27 @@ function waveBoss(dt) {
   );
 }
 
+// --- hard turbo --- //
+let hardTurboActive = false;
+function hardTurbo() {
+  if (turboMeter >= 10) {
+    hardTurboActive = true;
+    c.fillText("Press 'T' go hard turbo", 25, 200);
+  }
+  if (hardTurboActive === true && player.turboPress) {
+    turboMeter = 0;
+    console.log("raw turbo");
+    enemyHandler.enemies = [];
+  }
+}
+
+// --- ändrar utseendet lite --- //
+function setStyle() {
+  c.shadowBlur = 5;
+  c.lineJoin = "bevel";
+  c.lineWidth = 10;
+}
+
 // --- hanterar skott --- //
 const bulletHandler = new BulletHandler(canvas);
 
@@ -140,8 +159,9 @@ const player = new Player(canvas.width / 7, canvas.height / 2, bulletHandler);
 
 // --- fiender --- //
 const enemyHandler = new EnemyHandler(canvas);
+const coolTips = new funTips()
 
-// --- meny --- //
+// --- huvudmeny --- //
 function menu() {
   c.fillStyle = "white";
   c.font = "50px Orbitron";
@@ -168,87 +188,12 @@ function menu() {
 }
 menu();
 
-// --- main loop --- //
-function gameLoop() {
-  setStyle();
-  c.fillStyle = "black";
-  c.fillRect(0, 0, canvas.width, canvas.height);
-
-  bulletHandler.draw(c);
-  player.draw(c);
-
-  // --- scoremeter --- //
-  c.rect(0, canvas.height - 10, score, 10);
-  c.fill();
-  if (score >= canvas.width) {
-    score = 0;
-    level += 1;
-    player.health += 5;
-    player.damage += 0.07;
-  }
-
-  // --- spawnar fiender --- //
-  enemyHandler.draw(c);
-  enemySpawn();
-
-  // --- ui --- //
-  c.shadowBlur = 0;
-  c.fillStyle = "white";
-  c.font = "50px Orbitron";
-  c.fillText("Game " + attemptCount, 25, 50);
-  c.fillText("HP: " + player.health, 25, 150);
-  c.fillText("LVL: " + level, 25, 100);
-
-  displayTips();
-
-  // --- kollosion --- //
-  enemyHandler.enemies.forEach((enemy) => {
-    if (bulletHandler.collideWith(enemy)) {
-      score += 10;
-      if (enemy.health <= 0) {
-        score += 50;
-        const index = enemyHandler.enemies.indexOf(enemy);
-        enemyHandler.enemies.splice(index, 1);
-      }
-    }
-    if (enemyHandler.playerCollide(player)) {
-      // --- om spelaren dör --- //
-      if (player.health <= 0) {
-        playerDeath();
-      }
-    }
-  });
-}
-
-// --- Lista med Tips --- //
-const tipArray = [
-  "Press the Arrow Keys to move",
-  "You can fire bullets at enemies to eliminate them",
-  "Hold down the Spacebar to shoot",
-  "You deal more damage when you level up",
-  "Reaching a new level restores some health",
-  "You lose when your health reaches zero",
-  "Your maximum health is 100",
-  "The game becomes harder as you keep playing it",
-  "Enemies come in all sorts of colours",
-
-  "One could make all kinds of explosives, using simple household items",
-  "Chlorine gas can be created by mixing bleach with ammonia",
-  "Approximately 1 in 5 adults in the US experience mental illness in a given year",
-  "Over 40 million people worldwide are victims of modern slavery",
-
-  "Think about all the things that went wrong in your life",
-  "Avoid doing things that make you happy",
-  "Focus on your mistakes rather than your accomplishments",
-  "Give up on your dreams",
-];
-
 // --- visar tips --- //
 let tipTimer = 0;
 let currentTip = "";
 function displayTips() {
   if (tipTimer <= 0) {
-    currentTip = tipArray[getRandomArbitrary(0, tipArray.length)];
+    currentTip = coolTips.tipArray[getRandomArbitrary(0, coolTips.tipArray.length)];
     tipTimer = 500;
   }
   tipTimer--;
@@ -285,6 +230,8 @@ function playerDeath() {
   timeTilRefresh = 0;
   diffThreshold = 0;
   waveCounter = 0;
+  turboMeter = 0;
+  hardTurboActive = false;
   score = 0;
   level = 0;
   // --- ändrar till döds-skärmen --- //
@@ -303,6 +250,60 @@ function playerDeath() {
 // --- spelar musik --- //
 var myMusic;
 myMusic = new sound("stolen assets/Guitarmass.mp3");
+
+// --- main loop --- //
+function gameLoop() {
+  setStyle();
+  c.fillStyle = "black";
+  c.fillRect(0, 0, canvas.width, canvas.height);
+
+  bulletHandler.draw(c);
+  player.draw(c);
+
+  // --- scoremeter --- //
+  c.rect(0, canvas.height - 10, score, 10);
+  c.fill();
+  if (score >= canvas.width) {
+    score = 0;
+    level++;
+    turboMeter++;
+    player.health += 5;
+    player.damage += 0.07;
+  }
+
+  // --- spawnar fiender --- //
+  enemyHandler.draw(c);
+  enemySpawn();
+
+  // --- ui --- //
+  c.shadowBlur = 0;
+  c.fillStyle = "white";
+  c.font = "50px Orbitron";
+  c.fillText("Game " + attemptCount, 25, 50);
+  c.fillText("HP: " + player.health, 25, 150);
+  c.fillText("LVL: " + level, 25, 100);
+
+  // --- kollision --- //
+  enemyHandler.enemies.forEach((enemy) => {
+    if (bulletHandler.collideWith(enemy)) {
+      score += 10;
+      if (enemy.health <= 0) {
+        score += 50;
+        const index = enemyHandler.enemies.indexOf(enemy);
+        enemyHandler.enemies.splice(index, 1);
+      }
+    }
+    if (enemyHandler.playerCollide(player)) {
+      // --- om spelaren dör --- //
+      if (player.health <= 0) {
+        playerDeath();
+      }
+    }
+  });
+
+  displayTips();
+  hardTurbo();
+}
 
 // --- intervall --- //
 let intervalID;

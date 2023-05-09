@@ -117,7 +117,6 @@ body:after {
   width: 100%;
 }
 
-
 @keyframes appear {
   0% {
     filter: blur(5px);
@@ -132,4 +131,3 @@ body:after {
     opacity: 0.85;
   }
 }
-

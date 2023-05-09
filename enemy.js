@@ -32,7 +32,7 @@ export default class Enemy {
   // --- Hur fienden rör sig --- //
   movementPattern() {
     this.x -= this.xSpeed;
-    if (this.y + this.radius > this.canvas_y) this.ySpeed = 0 - this.ySpeed;
+    if (this.y + this.radius > this.canvas_y - 50) this.ySpeed = 0 - this.ySpeed;
 
     if (this.y - this.radius < 0) this.ySpeed = 0 - this.ySpeed;
 
