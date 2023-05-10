@@ -139,7 +139,6 @@ function hardTurbo() {
   }
   if (hardTurboActive === true && player.turboPress) {
     turboMeter = 0;
-    console.log("raw turbo");
     enemyHandler.enemies = [];
   }
 }
@@ -186,7 +185,9 @@ function menu() {
     false
   );
 }
-menu();
+
+
+window.onload = menu();
 
 // --- visar tips --- //
 let tipTimer = 0;
@@ -198,7 +199,7 @@ function displayTips() {
   }
   tipTimer--;
   c.fillStyle = "white";
-  c.font = "24px Orbitron";
+  c.font = "20px Orbitron";
   c.fillText("Fun Tip:  " + currentTip, 25, canvas.height - 25);
 }
 
@@ -251,6 +252,7 @@ function playerDeath() {
 var myMusic;
 myMusic = new sound("stolen assets/Guitarmass.mp3");
 
+
 // --- main loop --- //
 function gameLoop() {
   setStyle();
@@ -283,6 +285,8 @@ function gameLoop() {
   c.fillText("HP: " + player.health, 25, 150);
   c.fillText("LVL: " + level, 25, 100);
 
+  displayTips();
+  hardTurbo();
   // --- kollision --- //
   enemyHandler.enemies.forEach((enemy) => {
     if (bulletHandler.collideWith(enemy)) {
@@ -301,9 +305,8 @@ function gameLoop() {
     }
   });
 
-  displayTips();
-  hardTurbo();
 }
+
 
 // --- intervall --- //
 let intervalID;
