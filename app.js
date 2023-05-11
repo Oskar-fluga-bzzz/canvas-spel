@@ -145,7 +145,7 @@ function hardTurbo() {
 
 // --- ändrar utseendet lite --- //
 function setStyle() {
-  c.shadowBlur = 5;
+  c.shadowBlur = 10;
   c.lineJoin = "bevel";
   c.lineWidth = 10;
 }
@@ -158,7 +158,7 @@ const player = new Player(canvas.width / 7, canvas.height / 2, bulletHandler);
 
 // --- fiender --- //
 const enemyHandler = new EnemyHandler(canvas);
-const coolTips = new funTips()
+const coolTips = new funTips();
 
 // --- huvudmeny --- //
 function menu() {
@@ -186,7 +186,6 @@ function menu() {
   );
 }
 
-
 window.onload = menu();
 
 // --- visar tips --- //
@@ -194,7 +193,8 @@ let tipTimer = 0;
 let currentTip = "";
 function displayTips() {
   if (tipTimer <= 0) {
-    currentTip = coolTips.tipArray[getRandomArbitrary(0, coolTips.tipArray.length)];
+    currentTip =
+      coolTips.tipArray[getRandomArbitrary(0, coolTips.tipArray.length)];
     tipTimer = 500;
   }
   tipTimer--;
@@ -252,7 +252,6 @@ function playerDeath() {
 var myMusic;
 myMusic = new sound("stolen assets/Guitarmass.mp3");
 
-
 // --- main loop --- //
 function gameLoop() {
   setStyle();
@@ -281,7 +280,7 @@ function gameLoop() {
   c.shadowBlur = 0;
   c.fillStyle = "white";
   c.font = "50px Orbitron";
-  c.fillText("Game " + attemptCount, 25, 50);
+  c.fillText("Attempt " + attemptCount, 25, 50);
   c.fillText("HP: " + player.health, 25, 150);
   c.fillText("LVL: " + level, 25, 100);
 
@@ -304,9 +303,7 @@ function gameLoop() {
       }
     }
   });
-
 }
-
 
 // --- intervall --- //
 let intervalID;
