@@ -135,11 +135,12 @@ let hardTurboActive = false;
 function hardTurbo() {
   if (turboMeter >= 10) {
     hardTurboActive = true;
-    c.fillText("Press 'T' go hard turbo", 25, 200);
+    c.fillText("Press 'T' to go hard turbo", 25, 200);
   }
   if (hardTurboActive === true && player.turboPress) {
     turboMeter = 0;
     enemyHandler.enemies = [];
+    let hardTurboActive = false;
   }
 }
 
