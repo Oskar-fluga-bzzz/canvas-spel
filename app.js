@@ -140,7 +140,7 @@ function hardTurbo() {
   if (hardTurboActive === true && player.turboPress) {
     turboMeter = 0;
     enemyHandler.enemies = [];
-    let hardTurboActive = false;
+    hardTurboActive = false;
   }
 }
 
